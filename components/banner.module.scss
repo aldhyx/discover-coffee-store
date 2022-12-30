@@ -1,0 +1,146 @@
+/** Mobile first development **/
+
+.container {
+    margin-bottom: 6rem
+        /* 96px */
+    ;
+    position: relative;
+    z-index: 2;
+}
+
+.title {
+    font-weight: 800;
+    font-size: 3rem
+        /* 40px */
+    ;
+    line-height: 1;
+    margin: 0;
+    margin-bottom: .5rem
+        /* 8px */
+    ;
+
+    span:first-child {
+        color: var(--text-black);
+    }
+
+    span:last-child {
+        display: block;
+        color: var(--text-pink-dark);
+    }
+}
+
+.subTitle {
+    font-size: 1.5rem
+        /* 16px */
+    ;
+    margin: 0;
+    margin-bottom: 2.5rem
+        /* 40px */
+    ;
+    color: var(--text-black);
+}
+
+.button {
+    background-color: var(--text-pink-dark);
+    cursor: pointer;
+    color: var(--text-white-100);
+    outline: 0;
+    border: 0px;
+    border-radius: 3rem;
+    text-transform: uppercase;
+    font-weight: 600;
+    font-size: 1rem
+        /* 16px */
+    ;
+
+    padding-top: 1rem
+        /* 16px */
+    ;
+    padding-bottom: 1rem
+        /* 16px */
+    ;
+    line-height: 1.75rem
+        /* 28px */
+    ;
+    padding-left: 2.5rem
+        /* 40px */
+    ;
+    padding-right: 2.5rem
+        /* 40px */
+    ;
+
+    &:hover {
+        background-color: var(--text-pink-dark);
+    }
+}
+
+
+/** 
+  Breakpoints:
+  ------------
+  sm: min-width: 640px; //small device
+  md: min-width: 768px; // medium device
+  lg: min-width: 1024px; // large device
+  xl: min-width: 1280px; // extra large device
+  2xl: min-width: 1536px; // 2 x extra large device
+**/
+
+/** sm breakpoint **/
+@media (min-width: 640px) {
+    .title {
+        margin-bottom: 1rem
+            /* 16px */
+        ;
+    }
+
+}
+
+/** md breakpoint **/
+@media (min-width: 768px) {
+    .title {
+        span:last-child {
+            display: inline;
+        }
+
+        font-size: 3.75rem
+        /* 60px */
+        ;
+        line-height: 1;
+    }
+
+
+    .button {
+        padding-top: 1rem
+            /* 16px */
+        ;
+        padding-bottom: 1rem
+            /* 16px */
+        ;
+        font-size: 1.125rem
+            /* 18px */
+        ;
+        line-height: 1.75rem
+            /* 28px */
+        ;
+        padding-left: 2.5rem
+            /* 40px */
+        ;
+        padding-right: 2.5rem
+            /* 40px */
+        ;
+    }
+}
+
+/** lg breakpoint **/
+@media (min-width: 1024px) {
+
+    .title {
+        font-size: 4.5rem
+            /* 72px */
+        ;
+        line-height: 1;
+    }
+}
+
+/** xl breakpoint **/
+@media (min-width: 1280px) {}
