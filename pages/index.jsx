@@ -1,5 +1,6 @@
 import Head from 'next/head';
 import Banner from '../components/banner';
+import Card from '../components/card';
 import styles from '../styles/home.module.css';
 
 export default function Home() {
@@ -23,6 +24,27 @@ export default function Home() {
                     buttonText="View store nearby"
                     onClickBannerHandler={onClickBannerHandler}
                 />
+
+                <div className={styles.cardLayout}>
+                    <Card
+                        name="DarkHorse Coffee"
+                        imgUrl="/static/cf.jpg"
+                        href="/coffee-store/darkhose-coffee"
+                        className={styles.card}
+                    />
+                    <Card
+                        name="DarkHorse Coffee"
+                        imgUrl="/static/cf.jpg"
+                        href="/coffee-store/darkhose-coffee"
+                        className={styles.card}
+                    />
+                    <Card
+                        name="DarkHorse Coffee"
+                        imgUrl="/static/cf.jpg"
+                        href="/coffee-store/darkhose-coffee"
+                        className={styles.card}
+                    />
+                </div>
             </main>
         </div>
     );

@@ -13,6 +13,18 @@
   padding-right: 1rem /* 16px */;
 }
 
+.cardLayout {
+  display: grid;
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+  column-gap: 1.5rem /* 24px */;
+  row-gap: 1.5rem /* 24px */;
+}
+
+.card {
+  justify-content: center;
+}
+
+
 /** Breakpoints:
   sm: min-width: 640px;
   md: min-width: 768px;
@@ -43,6 +55,10 @@
   .main {
     margin-top: 4rem /* 64px */;
   }
+
+    .cardLayout {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 }
 
 @media (min-width: 1024px) {
@@ -54,6 +70,20 @@
     margin-top: 5rem /* 80px */;
     padding-left: 2rem /* 32px */;
     padding-right: 2rem /* 32px */;
+  }
+
+  .cardLayout {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1280px) {
+  .main {
+    margin-top: 7rem /* 112px */;
+  }
+
+  .cardLayout {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }
 
