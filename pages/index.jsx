@@ -2,8 +2,17 @@ import Head from 'next/head';
 import Banner from '../components/banner';
 import Card from '../components/card';
 import styles from '../styles/home.module.css';
+import coffeeStores from '../data/coffee-store.json';
 
-export default function Home() {
+export async function getStaticProps() {
+    return {
+        props: {
+            coffeeStores,
+        },
+    };
+}
+
+export default function Home(props) {
     const onClickBannerHandler = () => {
         alert('works');
     };
@@ -26,24 +35,15 @@ export default function Home() {
                 />
 
                 <div className={styles.cardLayout}>
-                    <Card
-                        name="DarkHorse Coffee"
-                        imgUrl="/static/cf.jpg"
-                        href="/coffee-store/darkhose-coffee"
-                        className={styles.card}
-                    />
-                    <Card
-                        name="DarkHorse Coffee"
-                        imgUrl="/static/cf.jpg"
-                        href="/coffee-store/darkhose-coffee"
-                        className={styles.card}
-                    />
-                    <Card
-                        name="DarkHorse Coffee"
-                        imgUrl="/static/cf.jpg"
-                        href="/coffee-store/darkhose-coffee"
-                        className={styles.card}
-                    />
+                    {props.coffeeStores.map((coffeeStore) => (
+                        <Card
+                            key={coffeeStore.id}
+                            name={coffeeStore.name}
+                            imgUrl={coffeeStore.imgUrl}
+                            href={`/coffee-store/${coffeeStore.id}`}
+                            className={styles.card}
+                        />
+                    ))}
                 </div>
             </main>
         </div>
