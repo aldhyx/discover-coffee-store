@@ -1,9 +1,8 @@
 /** Mobile first development **/
 
 .container {
-  margin-bottom: 14rem /* 224px */;
-  height: 100vh;
-  overflow: auto;
+  margin-bottom: 6rem;
+  height: 100%;
 }
 
 .main {
