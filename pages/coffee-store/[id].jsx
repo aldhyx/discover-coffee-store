@@ -8,20 +8,22 @@ import styles from '../../styles/coffee-store.module.scss';
 import { fetchCoffeeStores } from '../../lib/coffee-store';
 
 export async function getStaticProps(staticProps) {
-    const coffeeStores = await fetchCoffeeStores();
+    const coffeeStores = await fetchCoffeeStores({});
 
     const params = staticProps.params;
+    const coffeeStore = coffeeStores.find((coffeeStore) => {
+        return coffeeStore.fsq_id.toString() === params.id; //dynamic id
+    });
+
+    if (!coffeeStore) return { notFound: true };
+
     return {
-        props: {
-            coffeeStore: coffeeStores.find((coffeeStore) => {
-                return coffeeStore.fsq_id.toString() === params.id; //dynamic id
-            }),
-        },
+        props: { coffeeStore },
     };
 }
 
 export async function getStaticPaths() {
-    const coffeeStores = await fetchCoffeeStores();
+    const coffeeStores = await fetchCoffeeStores({});
 
     const paths = coffeeStores.map((coffeeStore) => {
         return {

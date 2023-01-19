@@ -2,11 +2,13 @@ import Head from 'next/head';
 import Banner from '../components/banner';
 import Card from '../components/card';
 import styles from '../styles/home.module.css';
-import coffeeStores from '../data/coffee-store.json';
 import { fetchCoffeeStores } from '../lib/coffee-store';
+import useLocation from '../hooks/useLocation';
+import { useContext, useEffect } from 'react';
+import { StoreContext } from '../stores/coffee-store';
 
 export async function getStaticProps() {
-    const coffeeStores = await fetchCoffeeStores();
+    const coffeeStores = await fetchCoffeeStores({});
 
     return {
         props: {
@@ -16,10 +18,22 @@ export async function getStaticProps() {
 }
 
 export default function Home(props) {
-    console.log('🚀 ~ file: index.jsx:27 ~ Home ~ props', props);
-    const onClickBannerHandler = () => {
-        alert('works');
-    };
+    const { error, getLatlng, latlng, loading } = useLocation();
+    const {
+        state: { coffeeStores },
+        setInitialState,
+    } = useContext(StoreContext);
+
+    useEffect(() => {
+        if (!latlng.lat || !latlng.lng) return;
+
+        fetchCoffeeStores({
+            limit: 12,
+            latlng: `${latlng.lat.toString()},${latlng.lng.toString()}`,
+        }).then((data) => {
+            setInitialState((prev) => ({ ...prev, coffeeStores: data }));
+        });
+    }, [latlng]);
 
     return (
         <div className={styles.container}>
@@ -34,21 +48,49 @@ export default function Home(props) {
 
             <main className={styles.main}>
                 <Banner
-                    buttonText="View store nearby"
-                    onClickBannerHandler={onClickBannerHandler}
+                    buttonText={loading ? 'Locating...' : 'View store nearby'}
+                    onClickBannerHandler={() => getLatlng()}
                 />
 
-                <div className={styles.cardLayout}>
-                    {props.coffeeStores.map((coffeeStore) => (
-                        <Card
-                            key={coffeeStore.fsq_id}
-                            name={coffeeStore.name}
-                            imgUrl={coffeeStore.imgUrl}
-                            href={`/coffee-store/${coffeeStore.fsq_id}`}
-                            className={styles.card}
-                        />
-                    ))}
-                </div>
+                {error && <span>{error}</span>}
+
+                {coffeeStores && coffeeStores.length > 0 && (
+                    <div>
+                        <h2 style={{ marginBottom: '2rem', fontSize: '2rem' }}>
+                            Coffee store near me
+                        </h2>
+                        <div className={styles.cardLayout}>
+                            {coffeeStores.map((coffeeStore) => (
+                                <Card
+                                    key={coffeeStore.fsq_id}
+                                    name={coffeeStore.name}
+                                    imgUrl={coffeeStore.imgUrl}
+                                    href={`/coffee-store/${coffeeStore.fsq_id}`}
+                                    className={styles.card}
+                                />
+                            ))}
+                        </div>
+                    </div>
+                )}
+
+                {props.coffeeStores && props.coffeeStores.length > 0 && (
+                    <div>
+                        <h2 style={{ marginBottom: '2rem', fontSize: '2rem' }}>
+                            Recent coffee store
+                        </h2>
+                        <div className={styles.cardLayout}>
+                            {props.coffeeStores.map((coffeeStore) => (
+                                <Card
+                                    key={coffeeStore.fsq_id}
+                                    name={coffeeStore.name}
+                                    imgUrl={coffeeStore.imgUrl}
+                                    href={`/coffee-store/${coffeeStore.fsq_id}`}
+                                    className={styles.card}
+                                />
+                            ))}
+                        </div>
+                    </div>
+                )}
             </main>
         </div>
     );
