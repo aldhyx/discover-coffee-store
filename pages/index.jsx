@@ -27,12 +27,13 @@ export default function Home(props) {
     useEffect(() => {
         if (!latlng.lat || !latlng.lng) return;
 
-        fetchCoffeeStores({
-            limit: 12,
-            latlng: `${latlng.lat.toString()},${latlng.lng.toString()}`,
-        }).then((data) => {
-            setInitialState((prev) => ({ ...prev, coffeeStores: data }));
-        });
+        fetch(
+            `/api/coffee-store?latlng=${`${latlng.lat.toString()},${latlng.lng.toString()}`}&limit=12`
+        )
+            .then((res) => res.json())
+            .then((data) => {
+                setInitialState((prev) => ({ ...prev, coffeeStores: data }));
+            });
     }, [latlng]);
 
     return (

@@ -6,6 +6,8 @@ import cls from 'classnames';
 import coffeeStoresData from '../../data/coffee-store.json';
 import styles from '../../styles/coffee-store.module.scss';
 import { fetchCoffeeStores } from '../../lib/coffee-store';
+import { useContext, useEffect, useState } from 'react';
+import { StoreContext } from '../../stores/coffee-store';
 
 export async function getStaticProps(staticProps) {
     const coffeeStores = await fetchCoffeeStores({});
@@ -15,10 +17,12 @@ export async function getStaticProps(staticProps) {
         return coffeeStore.fsq_id.toString() === params.id; //dynamic id
     });
 
-    if (!coffeeStore) return { notFound: true };
+    // if (!coffeeStore) return { notFound: true };
 
     return {
-        props: { coffeeStore },
+        props: {
+            coffeeStore: coffeeStore || {},
+        },
     };
 }
 
@@ -39,14 +43,28 @@ export async function getStaticPaths() {
 }
 
 const CoffeeStore = (props) => {
+    const {
+        state: { coffeeStores },
+    } = useContext(StoreContext);
+    const [coffeeStore, setCoffeeStore] = useState(props.coffeeStore);
     const router = useRouter();
-    if (router.isFallback) {
-        return <div>Loading...</div>;
-    }
+    const { isFallback, query } = router;
+    const { id } = query;
 
-    const { location, name, distance, imgUrl } = props.coffeeStore;
+    useEffect(() => {
+        if (Object.keys(coffeeStore).length <= 0) {
+            const contextCoffeeStore = coffeeStores.find((coffeeStore) => {
+                return coffeeStore.fsq_id.toString() === id;
+            });
+            setCoffeeStore(contextCoffeeStore);
+        }
+    }, [id]);
 
-    const handleUpvoteButton = () => {};
+    if (isFallback) return <div>Loading...</div>;
+
+    const { location, name, distance, imgUrl, vote } = coffeeStore;
+
+    const onClickUpVoteHandler = () => {};
 
     return (
         <div className={styles.layout}>
@@ -76,14 +94,18 @@ const CoffeeStore = (props) => {
                 </div>
 
                 <div className={`glass-no-hover ${styles.card}`}>
-                    <p className={styles.text}>{location.formatted_address}</p>
-                    <p className={styles.text}>{distance}m to go</p>
+                    <p className={styles.text}>
+                        {location?.formatted_address || ''}
+                    </p>
+                    <p className={styles.text}>
+                        {distance ? `${distance}, to go` : ''}
+                    </p>
                     <br />
-                    <p className={styles.text}>1</p>
+                    <p className={styles.text}>{vote}</p>
 
                     <button
                         className={styles.upvoteButton}
-                        onClick={handleUpvoteButton}
+                        onClick={onClickUpVoteHandler}
                     >
                         Up vote!
                     </button>
